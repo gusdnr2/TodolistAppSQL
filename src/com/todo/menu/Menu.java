@@ -12,7 +12,8 @@ public class Menu {
         System.out.println("5. ls_name_asc - 과제 이름 순서 정렬");
         System.out.println("6. ls_name_desc - 과제 이름 역순 정렬");
         System.out.println("7. ls_date - 과제 날짜 순서 정렬");
-        System.out.println("8. exit - 프로그램 종료하기");
+        System.out.println("8. find keyword - keyword가 제목, 내용에 들어간 과제 검색");
+        System.out.println("9. exit - 프로그램 종료하기");
     }
     public static void Prompt()
     {

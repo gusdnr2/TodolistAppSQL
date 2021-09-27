@@ -54,10 +54,21 @@ public class TodoList {
 	public int indexOf(TodoItem t) {
 		return list.indexOf(t);
 	}
+	
+	public int sizeOf() {
+		return list.size();
+	}
 
 	public Boolean isDuplicate(String title) {
 		for (TodoItem item : list) {
 			if (title.equals(item.getTitle())) return true;
+		}
+		return false;
+	}
+	
+	public Boolean isDuplicate(int title) {
+		for (TodoItem item : list) {
+			if (title == list.indexOf(item)+1) return true;
 		}
 		return false;
 	}

@@ -20,7 +20,16 @@ public class TodoMain {
 		do {
 			Menu.Prompt();
 			isList = false;
-			String choice = sc.next();
+			String choice1 = "";
+			String choice2 = " ";
+			String choice = sc.nextLine();
+			
+			if (choice.contains(" ")) {
+				choice1 = choice.substring(0,choice.indexOf(" "));
+				choice2 = choice.substring(choice.indexOf(" ")+1);
+				choice = choice1;
+			}
+			
 			switch (choice) {
 
 			case "add":
@@ -64,7 +73,11 @@ public class TodoMain {
 			case "help":
 				Menu.displaymenu();
 				break;
-
+			
+			case "find":
+				TodoUtil.find(l, choice2);
+				break;
+				
 			default:
 				System.out.println("정확한 명령어를 입력해 주세요. \n명령어 목록이 궁금하시면 help 명령어를 사용해 주세요.");
 				break;
