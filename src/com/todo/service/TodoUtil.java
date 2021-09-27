@@ -96,6 +96,7 @@ public class TodoUtil {
 				TodoItem t = new TodoItem(new_title, new_description, new_cate, new_ddat);
 				l.addItem(t);
 				System.out.println("항목이 업데이트되었습니다.");
+				break;
 			}
 		} 
 		} catch(NumberFormatException e) {
