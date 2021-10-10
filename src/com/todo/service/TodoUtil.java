@@ -35,12 +35,12 @@ public class TodoUtil {
 		System.out.print("내용 > ");
 		desc = sc.nextLine().trim();
 		
-		System.out.println("마감 일자 > ");
+		System.out.println("마감 일자 (예시 : 0000/00/00) > ");
 		due_date = sc.next();
 		
 		TodoItem t = new TodoItem(title, desc, category, due_date);
-		list.addItem(t);
-		System.out.println("성공적으로 추가하였습니다.");
+		if(list.addItem(t)>0)
+			System.out.println("성공적으로 추가하였습니다.");
 	}
 
 	public static void deleteItem(TodoList l) {
@@ -49,15 +49,12 @@ public class TodoUtil {
 		
 		System.out.print("=== 항목 삭제 ===\n"
 				+ "삭제 할 항목의 번호 > ");
-		int title = Integer.parseInt(sc.next());
-		
-		for (TodoItem item : l.getList()) {
-			if (title == l.indexOf(item)+1) {
-				l.deleteItem(item);
-				System.out.println("성공적으로 삭제 되었습니다.");
-				break;
-			}
+		int index = sc.nextInt();
+		if(l.deleteItem(index)>0) {
+			System.out.println("삭제되었습니다.");
 		}
+		
+		
 		} catch (NumberFormatException e) {
 			System.out.println("숫자만 입력해 주세요!");
 		}
@@ -70,57 +67,36 @@ public class TodoUtil {
 		System.out.println("\n"
 				+ "=== 항목 수정 ===\n"
 				+ "수정 할 항목의 번호 > ");
-		int title = Integer.parseInt(sc.next());		
-		if (!l.isDuplicate(title)) {
-			System.out.println("항목이 없습니다!");
-			return;
-		}
+		int index = sc.nextInt();		
+		
 
 		System.out.print("새로운 제목을 입력해 주세요 > ");
 		String new_title = sc.next().trim();
-		if (l.isDuplicate(new_title)) {
-			System.out.println("제목이 중복됩니다!");
-			return;
-		}
 		System.out.print("새로운 카테고리를 입력해 주세요 > ");
 		String new_cate = sc.next().trim();
 		sc.nextLine();
 		System.out.print("새로운 내용을 입력해 주세요 > ");
 		String new_description = sc.nextLine().trim();
 		System.out.print("새로운 마감 일자를 입력해 주세요 > ");
-		String new_ddat = sc.next().trim();
-		
-		for (TodoItem item : l.getList()) {
-			if (l.isDuplicate(title)) {
-				l.deleteItem(item);
-				TodoItem t = new TodoItem(new_title, new_description, new_cate, new_ddat);
-				l.addItem(t);
-				System.out.println("항목이 업데이트되었습니다.");
-				break;
-			}
-		} 
+		String new_ddat = sc.nextLine().trim();
+
+		TodoItem t = new TodoItem(new_title, new_description, new_cate, new_ddat);
+        t.setId(index);
+		if(l.updateItem(t)>0) 
+			System.out.println("수정되었습니다.");
 		} catch(NumberFormatException e) {
 			System.out.println("숫자만 입력해 주세요!");
-			
 		}
-			
 		}
 
 	
 	public static void find(TodoList l,String keyword) {
 		int counter = 0;
-		for (TodoItem item : l.getList()) {
-			String itemname = item.getTitle();
-			String descname = item.getDesc();
-			if (itemname.contains(keyword)) {
-				System.out.println((l.indexOf(item)+1)+". "+item.toString());
-				counter++;
-			}
-			else if (descname.contains(keyword)) {
-				System.out.println((l.indexOf(item)+1)+". "+item.toString());
-				counter++;
-			}
+		for (TodoItem item : l.getList(keyword)) {
+			System.out.println(item.toString());
+			counter++;
 		}
+			
 		if (counter == 0) {
 			System.out.println("검색 결과 항목을 찾지 못했습니다.");
 			return;
@@ -129,15 +105,44 @@ public class TodoUtil {
 		}
 		}
 	
+	public static void findCate(TodoList l,String keyword) {
+		int count = 0;
+		for(TodoItem item : l.getListCategory(keyword)) {
+			System.out.println(item.toString());
+			count++;
+		}
+		if (count == 0) {
+			System.out.println("항목을 찾지 못했습니다.");
+			return;
+		}
+		else 
+			System.out.println("총 "+count+"개의 항목을 찾았습니다.");
+		}
+	
 
 	public static void listAll(TodoList l) {
-		System.out.println("[전체 목록, 총 "+l.sizeOf()+"개]");
+		System.out.printf("[전체 목록, 총 %d개]\n",l.getCount());
 		for (TodoItem item : l.getList()) {
-			System.out.println((l.indexOf(item)+1)+". "+item.toString());
+			System.out.println(item.toString());
 		}
 	}
+	public static void listAll(TodoList l, String orderby, int ordering) {
+		System.out.printf("[전체 목록, 총 %d개]\n",l.getCount());
+		for (TodoItem item : l.getOrderedList(orderby, ordering)) {
+			System.out.println(item.toString());
+		}
+	}
+	public static void listCateAll(TodoList l) {
+		int count=0;
+		for(String item : l.getCategories()) {
+			System.out.print(item+" ");
+			count++;
+		}
+		System.out.printf("\n전체 카테고리의 개수는 %d개입니다.\n",count);
+	}
+}
 	
-	public static void saveList(TodoList l,String filename) {
+	/* public static void saveList(TodoList l,String filename) {
 		try {
 			Writer w  = new FileWriter(filename);
 			for (TodoItem item : l.getList()) {
@@ -178,4 +183,4 @@ public class TodoUtil {
 			System.out.println("파일을 읽지 못했습니다.");
 		}
 }
-}
+} */

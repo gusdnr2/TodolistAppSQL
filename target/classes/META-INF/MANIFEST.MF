@@ -1,6 +1,7 @@
 Manifest-Version: 1.0
 Built-By: khw
 Build-Jdk: 16.0.2
+Class-Path: lib/sqlite-jdbc-3.34.0.jar
 Main-Class: com.todo.Main
 Created-By: Maven Integration for Eclipse
 

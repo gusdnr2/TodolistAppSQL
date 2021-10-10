@@ -12,14 +12,11 @@ public class TodoMain {
 	
 		Scanner sc = new Scanner(System.in);
 		TodoList l = new TodoList();
-		String filename = "TodoList.txt";
-		boolean isList = false;
 		boolean quit = false;
-		TodoUtil.loadList(l, filename);
+		//l.importData(filename);
 		Menu.displaymenu();
 		do {
 			Menu.Prompt();
-			isList = false;
 			String choice1 = "";
 			String choice2 = " ";
 			String choice = sc.nextLine();
@@ -49,26 +46,40 @@ public class TodoMain {
 				break;
 
 			case "ls_name_asc":
-				l.sortByName();
 				System.out.println("=== 이름 순서 정렬 ===");
-				isList = true;
+				TodoUtil.listAll(l, "title", 1);
 				break;
 
 			case "ls_name_desc":
-				l.sortByName();
-				l.reverseList();
 				System.out.println("=== 이름 역순 정렬 ===");
-				isList = true;
+				TodoUtil.listAll(l, "title", 0);
 				break;
 				
 			case "ls_date":
-				l.sortByDate();
-				isList = true;
+				System.out.println("=== 날짜 순서 정렬 ===");
+				TodoUtil.listAll(l, "due_date", 1);
+				break;
+				
+			case "ls_date_desc":
+				System.out.println("=== 날짜 역순 정렬 ===");
+				TodoUtil.listAll(l, "due_date", 0);
+				break;
+				
+			case "ls_cate":
+				TodoUtil.listCateAll(l);
+				break;
+				
+			case "find_cate":
+				TodoUtil.findCate(l, choice2);
 				break;
 
 			case "exit":
 				quit = true;
 				break;
+				
+			case "reset":
+				l.DeleteData();
+				l.ResetSequence();
 				
 			case "help":
 				Menu.displaymenu();
@@ -83,8 +94,7 @@ public class TodoMain {
 				break;
 			}
 			
-			if(isList) TodoUtil.listAll(l);
 		} while (!quit);
-		TodoUtil.saveList(l, filename);
+		// TodoUtil.saveList(l, filename);
 	}
 }
